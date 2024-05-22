@@ -28,7 +28,15 @@ class RandomChar extends Component {
     };
 
     render() {
-        const {char: {name, description, thumbnail, homepage, wiki}} = this.state;
+        let {char: {name, description, thumbnail, homepage, wiki}} = this.state;
+
+        if (!description) {
+            description = "Description is empty"
+        } else if (description.length>250) {
+            description = description.slice(0, 100) + "...";
+        }
+
+
         return (
             <div className="randomchar">
                 <div className="randomchar__block">

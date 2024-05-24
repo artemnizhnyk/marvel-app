@@ -8,22 +8,40 @@ class CharList extends Component {
     state = {
         charList: [],
         loading: true,
-        error: false
+        error: false,
+        newItemsLoading: false,
+        offset: 210,
+        charsAreEnded: false
     };
 
     marvelService = new MarvelService();
 
     componentDidMount() {
-        this.marvelService.getAllCharacters()
-            .then(this.onCharListLoaded)
-            .catch(this.onError);
+        this.onRequest();
     }
 
-    onCharListLoaded = (charList) => {
+    onRequest = (offset) => {
+        this.onCharListLoading();
+        this.marvelService.getAllCharacters(offset)
+            .then(this.onCharListLoaded)
+            .catch(this.onError);
+    };
+
+    onCharListLoading = () => {
         this.setState({
-            charList,
-            loading: false
-        });
+            newItemsLoading: true
+        })
+    }
+
+    onCharListLoaded = (newCharList) => {
+        const charsAreEnded = newCharList.length < 9;
+        this.setState(({charList, offset})=> ({
+            charList: [...charList, ...newCharList],
+            loading: false,
+            newItemsLoading: false,
+            offset: offset+9,
+            charsAreEnded
+        }));
     };
 
     onError = () => {
@@ -59,7 +77,7 @@ class CharList extends Component {
 
     render() {
 
-        const {charList, loading, error} = this.state;
+        const {charList, loading, error, offset, newItemsLoading, charsAreEnded} = this.state;
 
         const items = this.renderItems(charList);
 
@@ -72,7 +90,10 @@ class CharList extends Component {
                 {errorMessage}
                 {spinner}
                 {content}
-                <button className="button button__main button__long">
+                <button className="button button__main button__long"
+                        disabled={newItemsLoading}
+                        style={{display: charsAreEnded ? 'none' : 'block'}}
+                        onClick={() => this.onRequest(offset)}>
                     <div className="inner">load more</div>
                 </button>
             </div>

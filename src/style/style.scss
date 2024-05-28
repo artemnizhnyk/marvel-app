@@ -52,12 +52,14 @@ input::-webkit-inner-spin-button {
     margin: 0 auto;
     padding: 50px 0 50px 0;
     position: relative;
-    .bg-decoration {
-        position: sticky;
-        left: 100%;
-        bottom: 10px;
-        z-index: -1;
-    }
+
+}
+
+.bg-decoration {
+    position: sticky;
+    left: 100%;
+    bottom: 10px;
+    z-index: -1;
 }
 
 main {

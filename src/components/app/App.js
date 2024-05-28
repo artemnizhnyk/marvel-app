@@ -19,26 +19,27 @@ class App extends Component {
     };
 
     render() {
-        return (
-            <div className="app">
-                <AppHeader/>
-                <main>
-                    <ErrorBoundary>
-                        <RandomChar/>
-                    </ErrorBoundary>
-
-                    <div className="char__content">
+        return (<>
+                <div className="app">
+                    <AppHeader/>
+                    <main>
                         <ErrorBoundary>
-                            <CharList onCharSelected={this.onCharSelected}/>
+                            <RandomChar/>
                         </ErrorBoundary>
 
-                        <ErrorBoundary>
-                            <CharInfo charId={this.state.selectedChar}/>
-                        </ErrorBoundary>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
-                </main>
-            </div>
+                        <div className="char__content">
+                            <ErrorBoundary>
+                                <CharList onCharSelected={this.onCharSelected}/>
+                            </ErrorBoundary>
+
+                            <ErrorBoundary>
+                                <CharInfo charId={this.state.selectedChar}/>
+                            </ErrorBoundary>
+                        </div>
+                    </main>
+                </div>
+                <img className="bg-decoration" src={decoration} alt="vision"/>
+            </>
         );
     }
 }

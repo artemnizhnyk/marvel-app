@@ -1,89 +1,84 @@
-import './charInfo.scss';
-import {Component} from "react";
+import "./charInfo.scss";
+import {useEffect, useState} from "react";
 import MarvelService from "../../services/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
 import Skeleton from "../skeleton/Skeleton";
 import PropTypes from "prop-types";
 
-class CharInfo extends Component {
-    state = {
-        char: null,
-        loading: false,
-        error: false
-    };
+const CharInfo = (props) => {
 
-    marvelService = new MarvelService();
+    const [char, setChar] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
-    componentDidMount() {
-        this.updateChar();
-    }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.charId !== prevProps.charId) {
-            this.updateChar();
-        }
-    }
+    const marvelService = new MarvelService();
 
-    updateChar = () => {
-        const {charId} = this.props;
+    useEffect(() => {
+        updateChar();
+    }, [props.charId]);
+
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if (this.props.charId !== prevProps.charId) {
+    //         this.updateChar();
+    //     }
+    // }
+
+    const updateChar = () => {
+        const {charId} = props;
         if (!charId) {
             return;
         }
 
-        this.onCharLoading();
+        onCharLoading();
 
-        this.marvelService
+        marvelService
             .getCharacterById(charId)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
+            .then(onCharLoaded)
+            .catch(onError);
     };
 
-    onCharLoaded = (char) => {
-        this.setState({
-            char,
-            loading: false
-        });
+    const onCharLoaded = (char) => {
+        setChar(char);
+        setLoading(false);
     };
 
-    onCharLoading = () => {
-        this.setState({
-            loading: true
-        });
+    const onCharLoading = () => {
+        setLoading(true);
     };
 
-    onError = () => {
+    const onError = () => {
+        setLoading(false);
+        setError(true);
         this.setState({
             loading: false,
             error: true
         });
     };
 
-    render() {
-        const {char, loading, error} = this.state;
+    const skeleton = char || loading || error ? null : <Skeleton/>;
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const spinner = loading ? <Spinner/> : null;
+    const content = (!loading && !error && char) ? <View char={char}/> : null;
 
-        const skeleton = char || loading || error ? null : <Skeleton/>;
-        const errorMessage = error ? <ErrorMessage/> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = (!loading && !error && char) ? <View char={char}/> : null;
+    return (
+        <div className="char__info">
+            {skeleton}
+            {errorMessage}
+            {spinner}
+            {content}
+        </div>
+    );
 
-        return (
-            <div className="char__info">
-                {skeleton}
-                {errorMessage}
-                {spinner}
-                {content}
-            </div>
-        );
-    }
-}
+};
 
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
 
-    let imgStyle = {'objectFit': 'cover'};
-    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-        imgStyle = {'objectFit': 'unset'};
+    let imgStyle = {"objectFit": "cover"};
+    if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
+        imgStyle = {"objectFit": "unset"};
     }
 
     return (<>
@@ -109,7 +104,7 @@ const View = ({char}) => {
             {comics.length > 0 ? null : "There is no comics with this character"}
             {
                 comics.map((item, i) => {
-                    if (i>=10) return;
+                    if (i >= 10) return;
                     return (
                         <li key={i} className="char__comics-item">
                             {item.name}
@@ -125,6 +120,6 @@ const View = ({char}) => {
 
 CharInfo.propTypes = {
     charId: PropTypes.number
-}
+};
 
 export default CharInfo;

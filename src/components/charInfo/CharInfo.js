@@ -19,12 +19,6 @@ const CharInfo = (props) => {
         updateChar();
     }, [props.charId]);
 
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (this.props.charId !== prevProps.charId) {
-    //         this.updateChar();
-    //     }
-    // }
-
     const updateChar = () => {
         const {charId} = props;
         if (!charId) {

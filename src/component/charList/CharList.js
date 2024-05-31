@@ -1,6 +1,6 @@
 import "./charList.scss";
 import {useEffect, useRef, useState} from "react";
-import MarvelService from "../../services/MarvelService";
+import MarvelService from "../.././service/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
 import PropTypes from "prop-types";

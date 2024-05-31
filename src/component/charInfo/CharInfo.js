@@ -1,6 +1,6 @@
 import "./charInfo.scss";
 import {useEffect, useState} from "react";
-import MarvelService from "../../services/MarvelService";
+import MarvelService from "../.././service/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
 import Skeleton from "../skeleton/Skeleton";

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import MarvelService from "../../services/MarvelService";
+import MarvelService from "../.././service/MarvelService";
 import Spinner from "../spinner/Spinner";
 
 import "./randomChar.scss";

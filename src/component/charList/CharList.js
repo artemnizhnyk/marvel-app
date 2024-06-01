@@ -7,13 +7,11 @@ import PropTypes from "prop-types";
 
 const CharList = (props) => {
         const [charList, setCharList] = useState([]);
-        const [loading, setLoading] = useState(true);
-        const [error, setError] = useState(false);
         const [newItemsLoading, setNewItemsLoading] = useState(false);
         const [offset, setOffset] = useState(210);
         const [charsAreEnded, setCharsAreEnded] = useState(false);
 
-        const marvelService = useMarvelService();
+        const {error, loading, getAllCharacters} = useMarvelService();
 
         useEffect(() => {
             onRequest();
@@ -21,9 +19,8 @@ const CharList = (props) => {
 
         const onRequest = (offset) => {
             onCharListLoading();
-            marvelService.getAllCharacters(offset)
+            getAllCharacters(offset)
                 .then(onCharListLoaded)
-                .catch(onError);
         };
 
         const onCharListLoading = () => {
@@ -33,15 +30,9 @@ const CharList = (props) => {
         const onCharListLoaded = (newCharList) => {
             const isCharsAreEnded = newCharList.length < 9;
             setCharList(charList => [...charList, ...newCharList]);
-            setLoading(false);
             setNewItemsLoading(newItemsLoading => false);
             setOffset(offset => offset + 9);
             setCharsAreEnded(charsAreEnded => isCharsAreEnded);
-        };
-
-        const onError = () => {
-            setError(true);
-            setLoading(false);
         };
 
         const itemsRefs = useRef([]);

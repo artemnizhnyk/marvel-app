@@ -16,25 +16,12 @@ const RandomChar = () => {
 
     const updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        onCharLoading();
-        marvelService
-            .getCharacterById(id)
-            .then(onCharLoaded)
-            .catch(onError);
+        getCharacterById(id)
+            .then(onCharLoaded);
     };
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(false);
-    };
-
-    const onCharLoading = () => {
-        setLoading(true);
-    };
-
-    const onError = () => {
-        setLoading(false);
-        setError(true);
     };
 
     const errorMessage = error ? <ErrorMessage/> : null;

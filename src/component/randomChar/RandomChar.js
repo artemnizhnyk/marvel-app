@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import MarvelService from "../.././service/MarvelService";
+import {useMarvelService} from "../.././service/MarvelService";
 import Spinner from "../spinner/Spinner";
 
 import "./randomChar.scss";
@@ -8,10 +8,7 @@ import ErrorMessage from "../errorMessage/ErrorMessage";
 
 const RandomChar = () => {
     const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-
-    const marvelService = new MarvelService();
+    const {loading, error, getCharacterById} = useMarvelService();
 
     useEffect(() => {
         updateChar();

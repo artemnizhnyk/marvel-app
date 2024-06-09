@@ -10,7 +10,7 @@ const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
 
-    const {error, loading, getCharacterById} = useMarvelService();
+    const {error, loading, getCharacterById, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -22,6 +22,7 @@ const CharInfo = (props) => {
             return;
         }
 
+        clearError();
         getCharacterById(charId)
             .then(onCharLoaded)
     };
